@@ -18,7 +18,8 @@
     },
     "SECRET_KEY_BASE": {
       "generator": "secret"
-    }
+    },
+    "YARN_PRODUCTION": "false"
   },
   "addons": [
     "heroku-postgresql:hobby-dev"
