@@ -6,6 +6,8 @@ The Ropes Project is a repository that has everything you'll need to get started
 
 The goal of the project is for you to develop confidence in building a modern ruby-on-rails application while learning and demonstrating our best development practices. You may find the tasks to be relatively straightforward, however, we want to stress the best practices which means that you may spend a significant amount of time addressing comments made by code reviewers after you've "finished" a task.
 
+Test Line
+
 ## Project Workflow
 
 Your overall workflow will make use of a few Github features. Don't worry if you aren't familiar with some of them, we'll go into detail below.
