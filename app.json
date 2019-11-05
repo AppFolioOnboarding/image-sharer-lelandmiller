@@ -18,15 +18,14 @@
     },
     "SECRET_KEY_BASE": {
       "generator": "secret"
-    },
-    "YARN_PRODUCTION": "false"
+    }
   },
   "addons": [
     "heroku-postgresql:hobby-dev"
   ],
   "buildpacks": [
     {
-      "url": "urn:buildpack:heroku/nodejs"
+      "url": "https://github.com/zldavis/heroku-buildpack-nodejs.git#78732a8e04ed90129a0a8350ad9428db8906198c"
     },
     {
       "url": "urn:buildpack:heroku/ruby"
