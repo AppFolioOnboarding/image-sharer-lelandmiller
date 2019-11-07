@@ -13,3 +13,6 @@
  *= require_tree .
  *= require_self
  */
+img.image-stream {
+  max-width: 400px;
+}

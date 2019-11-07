@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @image = images(:one)
+    @image = Image.new(url: 'http://image.com/image.gif')
   end
 
   def test_new
@@ -21,6 +21,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_show
+    @image.save!
     get image_url(@image)
 
     assert_select 'img', 1 do |elems|
