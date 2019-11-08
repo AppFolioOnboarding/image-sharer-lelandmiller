@@ -10,14 +10,17 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  def test_create
-    assert_difference('Image.count') do
-      post images_url, params: { image: { url: @image.url } }
+  def test_create__without_tag_list
+    ensure_post_creates_image(image: { url: @image.url }) do |image|
+      assert_equal @image.url, image.url
     end
+  end
 
-    assert_equal @image.url, Image.last.url
-
-    assert_redirected_to image_url(Image.last)
+  def test_create__with_tag_list
+    ensure_post_creates_image(image: { url: @image.url, tag_list: 'nice, red, absolute zero' }) do |image|
+      assert_equal @image.url, image.url
+      assert_equal ['nice', 'red', 'absolute zero'], image.tag_list
+    end
   end
 
   def test_show
@@ -29,5 +32,19 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
+  end
+
+  private
+
+  def ensure_post_creates_image(params)
+    assert_difference('Image.count') do
+      post images_url, params: params
+    end
+
+    created_image = Image.last
+
+    yield created_image
+
+    assert_redirected_to image_url(created_image)
   end
 end

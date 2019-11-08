@@ -8,6 +8,11 @@
 
 <ul>
   <% @images.each do |image| %>
-      <li><%= image_tag image.url, class: 'image-stream js-image-stream' %></li>
+      <li>
+        <% image.tag_list.each do |tag| %>
+          <div><%= tag %></div>
+        <% end %>
+        <%= image_tag image.url, class: 'image-stream js-image-stream' %>
+      </li>
   <% end %>
 </ul>

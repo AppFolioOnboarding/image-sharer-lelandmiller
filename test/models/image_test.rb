@@ -1,8 +1,10 @@
 require 'test_helper'
 
 class ImageTest < ActiveSupport::TestCase
+  VALID_HTTP_URL = 'http://example.com/cool.gif'.freeze
+
   def test_new__image_is_valid_with_http_url
-    valid_with_url('http://example.com/cool.gif')
+    valid_with_url(VALID_HTTP_URL)
   end
 
   def test_new__image_is_valid_with_https_url
@@ -23,6 +25,12 @@ class ImageTest < ActiveSupport::TestCase
 
   def test_new__image_is_invalid_with_empty_string
     refute Image.new(url: '').valid?
+  end
+
+  def test_new__image_accepts_tag_list
+    image = Image.new(url: VALID_HTTP_URL, tag_list: 'one, two, three')
+    assert image.valid?
+    assert_equal %w[one two three], image.tag_list
   end
 
   private
