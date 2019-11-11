@@ -7,4 +7,6 @@
 <div>
   <%= image_tag @image.url, class: 'image-stream' %>
 </div>
+
+<%= link_to 'Destroy', @image, method: :delete, data: { confirm: 'Are you sure?' } %>
 <%= link_to 'Home', root_path %>
