@@ -3,9 +3,10 @@ module PageObjects
     class IndexPage < PageObjects::Document
       path :root
 
-      collection :images, locator: 'ul', item_locator: 'li', contains: ImageCard do
+      collection :images, locator: 'ul', item_locator: 'li', contains: PageObjects::Images::ImageCard do
         def view!
-          # TODO
+          node.find('img').click
+          window.change_to(ShowPage)
         end
       end
 

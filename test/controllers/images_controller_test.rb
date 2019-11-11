@@ -55,6 +55,16 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_delete
+    @image.save
+
+    assert_difference('Image.count', -1) do
+      delete image_url(@image)
+    end
+
+    assert_redirected_to root_url
+  end
+
   private
 
   # @param [Array] image_descriptions An array of hashes containing attributes for image creation which will be

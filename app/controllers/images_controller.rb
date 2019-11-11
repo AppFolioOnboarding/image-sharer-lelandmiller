@@ -26,6 +26,12 @@ class ImagesController < ApplicationController
     end
   end
 
+  # DELETE /images/1
+  def destroy
+    @image.destroy!
+    redirect_to root_url, notice: 'Image was successfully destroyed.'
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

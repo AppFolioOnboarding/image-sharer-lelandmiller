@@ -25,8 +25,6 @@ class ImagesCrudTest < FlowTestCase
   end
 
   test 'delete an image' do
-    skip 'Will add functionality in a follow-up'
-
     cute_puppy_url = 'http://ghk.h-cdn.co/assets/16/09/980x490/landscape-1457107485-gettyimages-512366437.jpg'
     ugly_cat_url = 'http://www.ugly-cat.com/ugly-cats/uglycat041.jpg'
     Image.create!([
@@ -50,7 +48,7 @@ class ImagesCrudTest < FlowTestCase
     end
 
     images_index_page = image_show_page.delete_and_confirm!
-    assert_equal 'You have successfully deleted the image.', images_index_page.flash_message(:success)
+    assert_equal 'Image was successfully destroyed.', images_index_page.flash_message
 
     assert_equal 1, images_index_page.images.count
     assert_not images_index_page.showing_image?(url: ugly_cat_url)
