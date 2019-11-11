@@ -1,5 +1,10 @@
+<h1>Image <%= @image.id %></h1>
 <p id="notice"><%= notice %></p>
 
-<%= image_tag @image.url, width: 200 %>
-
+<div>
+<%= render 'tag_list', image: @image %>
+</div>
+<div>
+  <%= image_tag @image.url, class: 'image-stream' %>
+</div>
 <%= link_to 'Home', root_path %>

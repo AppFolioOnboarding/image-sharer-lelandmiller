@@ -11,13 +11,11 @@ class ImagesCrudTest < FlowTestCase
       url: 'invalid',
       tags: tags.join(', ')
     ).as_a(PageObjects::Images::NewPage)
-    assert_equal 'must be a valid URL', new_image_page.url.error_message
+    assert new_image_page.url.parent.node.has_text? 'is invalid'
 
     image_url = 'https://media3.giphy.com/media/EldfH1VJdbrwY/200.gif'
-    new_image_page.url.set(image_url)
-
-    image_show_page = new_image_page.create_image!
-    assert_equal 'You have successfully added an image.', image_show_page.flash_message(:success)
+    image_show_page = new_image_page.create_image! url: image_url, tags: tags.join(',')
+    assert_equal 'Image was successfully created.', image_show_page.flash_message
 
     assert_equal image_url, image_show_page.image_url
     assert_equal tags, image_show_page.tags
@@ -27,6 +25,8 @@ class ImagesCrudTest < FlowTestCase
   end
 
   test 'delete an image' do
+    skip 'Will add functionality in a follow-up'
+
     cute_puppy_url = 'http://ghk.h-cdn.co/assets/16/09/980x490/landscape-1457107485-gettyimages-512366437.jpg'
     ugly_cat_url = 'http://www.ugly-cat.com/ugly-cats/uglycat041.jpg'
     Image.create!([
