@@ -69,7 +69,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   def assert_contains_image_stream_in_order(expected_descriptions)
     actual_descriptions = css_select('li').map do |elem|
       url = elem.search('img').first.attributes['src'].value
-      tag_list = elem.search('a').map(&:text)
+      tag_list = elem.search('.js-tag').map(&:text)
       { url: url, tag_list: tag_list }
     end
     assert_equal expected_descriptions, actual_descriptions

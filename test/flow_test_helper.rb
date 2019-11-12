@@ -3,6 +3,14 @@ require 'test_helper'
 require 'active_support/test_case'
 require 'capybara/rails'
 require 'capybara/dsl'
+require 'ae_page_objects'
+require 'ae_page_objects/rails'
+
+module PageObjects
+end
+
+require 'page_objects/document.rb'
+Dir[File.dirname(__FILE__) + '/page_objects/**/*.rb'].each { |file| require file }
 
 class FlowTestCase < ActiveSupport::TestCase
   include Capybara::DSL
