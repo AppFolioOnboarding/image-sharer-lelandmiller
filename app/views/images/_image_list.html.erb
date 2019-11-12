@@ -1,0 +1,12 @@
+<ul>
+  <% images.each do |image| %>
+    <li>
+      <div>
+        <% image.tag_list.each do |tag| %>
+          <%= link_to tag, images_url(tag: tag) %>
+        <% end %>
+      </div>
+      <%= image_tag image.url, class: 'image-stream js-image-stream' %>
+    </li>
+  <% end %>
+</ul>

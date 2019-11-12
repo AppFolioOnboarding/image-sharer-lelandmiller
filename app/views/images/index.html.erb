@@ -1,0 +1,17 @@
+<h1>Image Sharer Pro+ Edition</h1>
+
+<div>
+  <%= link_to 'Home', root_path %> | <%= link_to 'Add Cool Image', new_image_path %>
+</div>
+
+<% if @tag %>
+  <p><em>Showing images tagged with <%= @tag %>.</em></p>
+<% else %>
+  <p>Are you ready to share images? You have come to the right place!</p>
+<% end %>
+
+<p>
+  There are currently <%= @images.count %> images<% if @tag %> tagged with <%= @tag %><% end %>!
+</p>
+
+<%= render 'images/image_list', images: @images %>
