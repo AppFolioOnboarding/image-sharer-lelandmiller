@@ -3,6 +3,9 @@
 <div>
 <%= render 'tag_list', image: @image %>
 </div>
+
+<%= link_to 'Edit tags', edit_image_path(@image) %>
+
 <div>
   <%= image_tag @image.url, class: 'image-stream' %>
 </div>
