@@ -1,3 +1,5 @@
+require_relative './image_card'
+
 module PageObjects
   module Images
     class IndexPage < PageObjects::Document
@@ -5,7 +7,8 @@ module PageObjects
 
       collection :images, locator: 'ul', item_locator: 'li', contains: ImageCard do
         def view!
-          # TODO
+          node.find('img').click
+          window.change_to(ShowPage)
         end
       end
 

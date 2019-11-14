@@ -1,4 +1,4 @@
-<h1>Image Sharer Pro+ Edition</h1>
+<h2>Home</h2>
 
 <div>
   <%= link_to 'Home', root_path %> | <%= link_to 'Add Cool Image', new_image_path %>
@@ -14,4 +14,4 @@
   There are currently <%= @images.count %> images<% if @tag %> tagged with <%= @tag %><% end %>!
 </p>
 
-<%= render 'images/image_list', images: @images %>
+<%= render 'image_list', images: @images %>
