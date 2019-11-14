@@ -1,6 +1,9 @@
 require 'test_helper'
 
+# rubocop:disable Metrics/ClassLength
 class ImagesControllerTest < ActionDispatch::IntegrationTest
+  VALID_URL = 'http://example.com/image.gif'.freeze
+
   setup do
     @image = Image.new(url: 'http://image.com/image.gif', tag_list: 'example_tag')
   end
@@ -49,11 +52,95 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  def test_edit
+    @image.save
+    get edit_image_url(@image)
+    assert_response :success
+  end
+
+  def test_edit__starts_with_valid_tag_list
+    original_image = Image.create url: VALID_URL, tag_list: 'cat, dog'
+    get edit_image_url(original_image)
+    assert_response :success
+
+    matching_input_tags = css_select('input#image_tag_list')
+    assert_equal 1, matching_input_tags.size
+    displayed_tag_list = matching_input_tags.first.attributes['value'].value
+
+    new_image = Image.new url: VALID_URL, tag_list: displayed_tag_list
+
+    assert_equal original_image.tag_list, new_image.tag_list
+  end
+
+  def test_edit__image_does_not_exist_raises
+    @image.save!
+    @image.destroy!
+
+    assert_raise(ActiveRecord::RecordNotFound) { get edit_image_url(@image) }
+  end
+
   def test_create__with_tag_list
     ensure_post_creates_image(image: { url: @image.url, tag_list: 'nice, red, absolute zero' }) do |image|
       assert_equal @image.url, image.url
       assert_equal ['nice', 'red', 'absolute zero'], image.tag_list
     end
+  end
+
+  def test_update__with_tag_list
+    image = Image.create!(url: VALID_URL, tag_list: 'cool, good')
+
+    assert_no_difference('Image.count') do
+      patch image_url(image), params: { image: { tag_list: 'dog, cat' } }
+    end
+
+    assert_redirected_to image_url(image)
+
+    image.reload
+
+    assert_equal VALID_URL, image.url
+    assert_equal %w[dog cat], image.tag_list
+  end
+
+  def test_update__on_destroyed_object
+    image = Image.create!(url: VALID_URL, tag_list: 'cool, good')
+    image.destroy!
+
+    assert_no_difference('Image.count') do
+      assert_raise ActiveRecord::RecordNotFound do
+        patch image_url(image), params: { image: { tag_list: 'dog, cat' } }
+      end
+    end
+  end
+
+  def test_update__with_empty_tag_list
+    image = Image.create!(url: VALID_URL, tag_list: 'cool, good')
+
+    assert_no_difference('Image.count') do
+      patch image_url(image), params: { image: { tag_list: '' } }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select 'span.error', "can't be blank"
+
+    image.reload
+
+    assert_equal VALID_URL, image.url
+    assert_equal %w[cool good], image.tag_list
+  end
+
+  def test_update__ignores_url_update
+    image = Image.create!(url: 'http://example.com/image.gif', tag_list: 'cool, good')
+
+    assert_no_difference('Image.count') do
+      patch image_url(image), params: { image: { url: 'http://example.com/new.png', tag_list: 'dog, cat' } }
+    end
+
+    assert_redirected_to image_url(image)
+
+    image.reload
+
+    assert_equal VALID_URL, image.url
+    assert_equal %w[dog cat], image.tag_list
   end
 
   def test_delete
@@ -109,3 +196,4 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to image_url(created_image)
   end
 end
+# rubocop:enable Metrics/ClassLength

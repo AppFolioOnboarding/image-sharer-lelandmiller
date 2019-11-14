@@ -15,14 +15,26 @@ class ImagesController < ApplicationController
     @image = Image.new
   end
 
+  # GET /images/1/edit
+  def edit; end
+
   # POST /images
   def create
-    @image = Image.new(image_params)
+    @image = Image.new(creation_params)
 
     if @image.save
       redirect_to @image, notice: 'Image was successfully created.'
     else
       render :new
+    end
+  end
+
+  # PATCH/PUT /images/1
+  def update
+    if @image.update(update_params)
+      redirect_to @image, notice: 'Image was successfully updated.'
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -40,7 +52,12 @@ class ImagesController < ApplicationController
   end
 
   # Only allow a trusted parameter "white list" through.
-  def image_params
+  def creation_params
     params.require(:image).permit(:url, :tag_list)
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def update_params
+    params.require(:image).permit(:tag_list)
   end
 end

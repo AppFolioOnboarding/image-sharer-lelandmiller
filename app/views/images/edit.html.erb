@@ -1,0 +1,20 @@
+<h2>Editing Image <%= @image.id %></h2>
+
+<%= simple_form_for(@image) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.input :tag_list, input_html: { value: f.object.tag_list.join(',') } %> (comma separated)
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit,  'Update tags' %>
+  </div>
+<% end %>
+
+<div>
+  <%= image_tag @image.url, class: 'image-stream' %>
+</div>
+
+<%= link_to 'Home', root_path %>
