@@ -37,6 +37,13 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  def test_show__image_does_not_exist_raises
+    @image.save!
+    @image.destroy!
+
+    assert_raise(ActiveRecord::RecordNotFound) { get image_url(@image) }
+  end
+
   def test_new
     get new_image_url
     assert_response :success
@@ -63,6 +70,17 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to root_url
+  end
+
+  def test_delete__deleting_an_image_that_has_already_been_destroyed_raises
+    @image.save!
+    @image.destroy!
+
+    assert_difference('Image.count', 0) do
+      assert_raise(ActiveRecord::RecordNotFound) do
+        delete image_url(@image)
+      end
+    end
   end
 
   private
