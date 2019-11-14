@@ -2,15 +2,15 @@ require 'test_helper'
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @image = Image.new(url: 'http://image.com/image.gif')
+    @image = Image.new(url: 'http://image.com/image.gif', tag_list: 'example_tag')
   end
 
-  def test_index__correct_images_shown_with_and_without_tag
+  def test_index__correct_images_shown_on_index_and_when_filtered_by_tag
     saved_images = [
       { url: 'http://example.com/image1.png', tag_list: %w[cat] },
       { url: 'https://example.com/image2.gif', tag_list: %w[cat dog] },
       { url: 'https://example.com/image3.jpeg', tag_list: %w[rat] },
-      { url: 'https://example.com/image3.jpeg', tag_list: [] }
+      { url: 'https://example.com/image3.jpeg', tag_list: %w[dog] }
     ]
 
     cat_images = saved_images.filter { |image| image[:tag_list].include? 'cat' }
@@ -47,12 +47,6 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   def test_new
     get new_image_url
     assert_response :success
-  end
-
-  def test_create__without_tag_list
-    ensure_post_creates_image(image: { url: @image.url }) do |image|
-      assert_equal @image.url, image.url
-    end
   end
 
   def test_create__with_tag_list
