@@ -60,7 +60,7 @@ function checkResponseStatus(res) {
 }
 
 /**
- * Perform an HTTP POST to the API and parse the response as JSON
+ * Perform an HTTP POST to the API
  */
 export function post(path, body) {
   return fetch(path, {
@@ -69,5 +69,5 @@ export function post(path, body) {
     headers: Object.assign({ 'X-CSRF-Token': getCsrfToken() }, HEADERS),
     method: 'POST',
     redirect: 'error',
-  }).then(checkResponseStatus);
+  }).then(res => res.status == 200 ? Promise.resolve() : Promise.reject());
 }

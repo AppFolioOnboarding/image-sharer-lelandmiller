@@ -1,5 +1,5 @@
-import React from 'react';
 import { observer } from 'mobx-react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 @observer
@@ -15,11 +15,18 @@ export default class FeedbackForm extends React.Component {
   };
 
   onSubmit = (event) => {
-    // TODO: implement
+    const { feedbackStore } = this.props;
     event.preventDefault();
+    feedbackStore.submit();
   };
 
-  render() {
+  reset = (event) => {
+    const { feedbackStore } = this.props;
+    event.preventDefault();
+    feedbackStore.reset();
+  };
+
+  renderFeedbackForm() {
     const { feedbackStore } = this.props;
 
     return (
@@ -51,6 +58,23 @@ export default class FeedbackForm extends React.Component {
         </div>
       </form>
     );
+  }
+
+  renderResponse() {
+    return (
+      <div>
+        <p>Thank you for your feedback!</p>
+        <button onClick={this.reset}>Submit More Feedback</button>
+      </div>
+    );
+  }
+
+  render() {
+    const { feedbackStore } = this.props;
+
+    return feedbackStore.submitted
+      ? this.renderResponse()
+      : this.renderFeedbackForm();
   }
 }
 
