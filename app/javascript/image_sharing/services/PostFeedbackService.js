@@ -1,7 +1,7 @@
-// import { post } from '../utils/helper';
+import { post } from '../utils/helper';
 
-export class PostFeedbackService {
-  /* Implement your service */
+export default class PostFeedbackService {
+  postFeedback(body) {
+    return post('/api/feedbacks', body);
+  }
 }
-
-export default PostFeedbackService;
